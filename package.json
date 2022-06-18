@@ -1,0 +1,29 @@
+{
+  "name": "aria2-client-js",
+  "version": "0.0.1",
+  "description": "aria2 client for node.js and web environment",
+  "main": "./dist/index.js",
+  "repository": "git@github.com:hjylxmhzq/aria2-client-js.git",
+  "author": "Tony Hu <hujingyuan25@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "events": "^3.3.0",
+    "js-base64": "^3.7.2",
+    "typescript": "^4.7.4",
+    "uuid": "^8.3.2",
+    "ws": "^8.8.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/jest": "^28.1.2",
+    "@types/uuid": "^8.3.4",
+    "@types/ws": "^8.5.3",
+    "jest": "^28.1.1",
+    "ts-jest": "^28.0.5"
+  }
+}
