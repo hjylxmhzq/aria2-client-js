@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid'
 import { encode as encodeBase64 } from 'js-base64';
 import { WebSocket, MessageEvent } from 'ws';
+import { StatusKey } from './defines';
 
 export type EventName = 'downloadStart';
 export type TransportType = 'get' | 'post' | 'websocket';
@@ -124,7 +125,7 @@ export default class Aria2 extends EventEmitter {
         });
     }
 
-    private async call(method: string, params: any[] = []) {
+    async call(method: string, params: any[] = []) {
         if (this.options.transportType === 'get') {
             return await this.callByGet(method, params);
         } else if (this.options.transportType === 'post') {
@@ -136,8 +137,59 @@ export default class Aria2 extends EventEmitter {
         }
     }
 
-    addURI(uri: string) {
+    async addURI(uris: string[], dest: string) {
+        const result = await this.call('aria2.addUri', [uris, { dir: dest }]);
+        return result;
+    }
 
+    async remove(gid: string) {
+        const result = await this.call('aria2.remove', [gid]);
+        return result;
+    }
+
+    async forceRemove(gid: string) {
+        const result = await this.call('aria2.forceRemove', [gid]);
+        return result;
+    }
+
+    async pause(gid: string) {
+        const result = await this.call('aria2.pause', [gid]);
+        return result;
+    }
+
+    async pauseAll() {
+        const result = await this.call('aria2.pauseAll');
+        return result;
+    }
+
+    async forcePause(gid: string) {
+        const result = await this.call('aria2.forcePause', [gid]);
+        return result;
+    }
+
+    async forcePauseAll(gid: string) {
+        const result = await this.call('aria2.forcePauseAll');
+        return result;
+    }
+
+    async tellStatus(gid: string, keys: StatusKey[] = []) {
+        const result = await this.call('aria2.tellStatus', [gid, keys]);
+        return result;
+    }
+
+    async getUris(gid: string) {
+        const result = await this.call('aria2.getUris', [gid]);
+        return result;
+    }
+
+    async getFiles(gid: string) {
+        const result = await this.call('aria2.getFiles', [gid]);
+        return result;
+    }
+
+    async getVersion() {
+        const result = await this.call('aria2.getVersion');
+        return result;
     }
 
     async getGlobalOption() {
