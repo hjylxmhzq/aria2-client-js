@@ -120,6 +120,7 @@ export default class Aria2 extends EventEmitter {
 
         return new Promise((resolve, reject) => {
             this.onWSMessage(uid, (data) => {
+                console.log(this.wsMessageListeners)
                 resolve(data.result);
             });
         });
