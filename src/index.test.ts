@@ -27,19 +27,31 @@ for (let [aria2Type, aria2] of [['GET', aria2UseGet], ['POST', aria2UsePost], ['
 
     test(`addURI:${aria2Type}`, async () => {
         const gid = await aria2.addURI(['http://www.baidu.com'], '/downloads/a');
+        const deletedGid = await aria2.remove(gid);
         expect(typeof gid).toBe('string');
     });
 
     test(`getUris:${aria2Type}`, async () => {
         const gid = await aria2.addURI(['http://www.baidu.com'], '/downloads/a');
+        const deletedGid = await aria2.remove(gid);
         const uris = await aria2.getUris(gid);
         expect(Array.isArray(uris) && !!uris.length).toBeTruthy();
         expect('status' in uris[0]).toBeTruthy();
         expect('uri' in uris[0]).toBeTruthy();
     });
 
-    
+    test(`tellStatus:${aria2Type}`, async () => {
+        const gid = await aria2.addURI(['http://www.baidu.com'], '/downloads/a');
+        const result = await aria2.tellStatus(gid);
+        const deletedGid = await aria2.remove(gid);
+        console.log(result);
+    });
 
+    test(`tellStatus:${aria2Type}`, async () => {
+        const gid = await aria2.addURI(['http://www.baidu.com'], '/downloads/a');
+        const result = await aria2.getFiles(gid);
+        const deletedGid = await aria2.remove(gid);
+    });
     aria2.destroy();
 }
 

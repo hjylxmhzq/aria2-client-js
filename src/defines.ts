@@ -24,3 +24,17 @@ export enum StatusKey {
     'verifiedLength' = 'verifiedLength',
     'verifyIntegrityPending' = 'verifyIntegrityPending'
 };
+
+export interface UriInfo {
+    uri: string;
+    status: 'used' | 'waiting';
+};
+
+export interface FileInfo {
+    uris: UriInfo[];
+    index: string;
+    path: string;
+    length: string;
+    completedLength: string;
+    selected: 'true' | 'false';
+}

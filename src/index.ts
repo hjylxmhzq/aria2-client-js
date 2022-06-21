@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid'
 import { encode as encodeBase64 } from 'js-base64';
 import { WebSocket, MessageEvent } from 'ws';
-import { StatusKey } from './defines';
+import { FileInfo, StatusKey, UriInfo } from './defines';
 
 export type EventName = 'downloadStart';
 export type TransportType = 'get' | 'post' | 'websocket';
@@ -140,7 +140,7 @@ export default class Aria2 extends EventEmitter {
 
     async addURI(uris: string[], dest: string) {
         const result = await this.call('aria2.addUri', [uris, { dir: dest }]);
-        return result;
+        return result as string;
     }
 
     async remove(gid: string) {
@@ -180,12 +180,12 @@ export default class Aria2 extends EventEmitter {
 
     async getUris(gid: string) {
         const result = await this.call('aria2.getUris', [gid]);
-        return result;
+        return result as UriInfo[];
     }
 
     async getFiles(gid: string) {
         const result = await this.call('aria2.getFiles', [gid]);
-        return result;
+        return result as FileInfo[];
     }
 
     async getVersion() {
