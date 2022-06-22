@@ -38,3 +38,8 @@ export interface FileInfo {
     completedLength: string;
     selected: 'true' | 'false';
 }
+
+export interface VersionInfo {
+    version: string;
+    enabledFeatures: string[];
+}

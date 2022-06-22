@@ -15,14 +15,16 @@ export interface Aria2Options {
     token: string;
     transportType: TransportType;
     url: string;
+    timeout: number;
 }
 
-type OptionalKey = 'transportType';
+type OptionalKey = 'transportType' | 'timeout';
 
 type Aria2ConstructorOptions = Optional<Aria2Options, OptionalKey>;
 
 const defaultOptions: PartialRequired<Aria2Options, OptionalKey> = {
     transportType: 'post',
+    timeout: 5000,
 }
 
 const httpAgent = axios.create();
@@ -75,7 +77,21 @@ export default class Aria2 extends EventEmitter {
     }
 
     private onWSMessage(id: string, fn: (msg: any) => void) {
-        this.wsMessageListeners.push({ listener: fn, id });
+
+        function wrapper(msg: any) {
+            clearTimeout(timer);
+            fn(msg);
+        }
+
+        const task = { listener: wrapper, id };
+        this.wsMessageListeners.push(task);
+        const timer = setTimeout(() => {
+            const idx = this.wsMessageListeners.indexOf(task);
+            if (idx > -1) {
+                this.wsMessageListeners.splice(idx, 1);
+            }
+            throw new Error('aria2 websocket: wait for response timeout');
+        }, this.options.timeout);
     }
 
     private uid() {
@@ -92,7 +108,8 @@ export default class Aria2 extends EventEmitter {
         search.append('params', encodeBase64(JSON.stringify(allParams)));
 
         const queryString = this.options.url + '?' + search.toString();
-        const resp = await this.ax.get(queryString);
+
+        const resp = await this.ax.get(queryString, { timeout: this.options.timeout });
         const result = resp.data.result;
         return result;
     }
@@ -103,6 +120,8 @@ export default class Aria2 extends EventEmitter {
             jsonrpc: "2.0",
             method,
             params: [`token:${this.options.token}`, ...params],
+        }, {
+            timeout: this.options.timeout,
         });
         const result = resp.data.result;
         return result;
@@ -145,12 +164,12 @@ export default class Aria2 extends EventEmitter {
 
     async remove(gid: string) {
         const result = await this.call('aria2.remove', [gid]);
-        return result;
+        return result as string;
     }
 
     async forceRemove(gid: string) {
         const result = await this.call('aria2.forceRemove', [gid]);
-        return result;
+        return result as string;
     }
 
     async pause(gid: string) {

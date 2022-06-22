@@ -29,16 +29,16 @@ const gid = await aria2.addURI(['http://a.com/path/to/file'], '/downloads');
 // Delete a download task
 const deletedGid = await aria2.remove(gid);
 
-// Download task status
+// Get download status
 const status = await aria2.tellStatus(gid);
 
-// global settings of aria2 backend
+// Get global settings of aria2 backend
 const globalOptions = await aria2.getGlobalOption();
 
-// uris of a download task
+// Get uris of a download task
 const uris = await aria2.getUris(gid);
 
-// All files of a download task
+// Get all files of a download task
 const files = await aria2.getFiles(gid);
 
 ...
