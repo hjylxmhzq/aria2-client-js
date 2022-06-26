@@ -6,7 +6,7 @@ A simple JavaScript/TypeScript aria2 client lib which supports aria2 http/websoc
 ## yarn/npm
 
 ```bash
-npm install -S aria2-client-js
+npm install -S aria2-client
 ```
 
 ```bash

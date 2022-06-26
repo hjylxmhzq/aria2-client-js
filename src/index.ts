@@ -220,7 +220,6 @@ export default class Aria2 extends EventEmitter {
     on(eventName: 'downloadStart', listener: (file: string) => void): this;
     on(eventName: EventName, listener: (...args: any[]) => void) {
 
-
         return this;
     }
 }

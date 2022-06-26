@@ -1,5 +1,5 @@
 {
-  "name": "aria2-client-js",
+  "name": "aria2-client",
   "version": "0.0.1",
   "description": "aria2 client for node.js and web environment",
   "main": "./dist/index.js",
